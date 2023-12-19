@@ -1,4 +1,6 @@
+const axios = require("axios")
 const schedule = require("node-schedule")
+const {postToChannel} = require("./_utils")
 const techDiscussions = [
   {
     id: 1,
