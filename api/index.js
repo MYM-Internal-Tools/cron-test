@@ -125,3 +125,23 @@ const jobQuotes = schedule.scheduleJob(
     })()
   }
 )
+const jobQ = schedule.scheduleJob(
+  {hour: 11, minute: 6, tz: "UTC+01:00"},
+  function () {
+    ;(async (req, res) => {
+      try {
+        let resp = await axios.get(`https://api.quotable.io/random`)
+        const quote = resp.data.content
+        const author = resp.data.author
+
+        await postToChannel(
+          "#random",
+          res,
+          `Hey everyone <!channel>, How is it going. :blush:  What are your agenda for today? :technologist:  \n\n*Quote of the day* .\n\n>*${quote}* by _${author}_ \n\n*Let's get to work*  🤸 🤸 🤓. `
+        )
+      } catch (error) {
+        console.log("schedule error: " + error)
+      }
+    })()
+  }
+)
