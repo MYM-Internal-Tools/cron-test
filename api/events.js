@@ -1,30 +1,34 @@
-import { challenge } from './events_handlers/_challenge'
-import { app_mention } from './events_handlers/_app_mention'
-import { channel_created } from './events_handlers/_channel_created'
-import { validateSlackRequest } from './_validate'
-import { signingSecret } from './_constants'
+import {challenge} from "./events_handlers/_challenge"
+import {app_mention} from "./events_handlers/_app_mention"
+import {channel_created} from "./events_handlers/_channel_created"
+import {validateSlackRequest} from "./_validate"
+import {signingSecret} from "./_constants"
+import {app_home_opened} from "./events_handlers/_app_home_opened"
 
 export default async function events(req, res) {
   const type = req.body.type
 
-  if (type === 'url_verification') {
+  if (type === "url_verification") {
     await challenge(req, res)
   } else if (validateSlackRequest(req, signingSecret)) {
-    if (type === 'event_callback') {
+    if (type === "event_callback") {
       const event_type = req.body.event.type
 
       switch (event_type) {
-        case 'app_mention':
+        case "app_mention":
           await app_mention(req, res)
           break
-        case 'channel_created':
+        case "channel_created":
           await channel_created(req, res)
+          break
+        case "message.app_home":
+          await app_home_opened(req, res)
           break
         default:
           break
       }
     } else {
-      console.log('body:', req.body)
+      console.log("body:", req.body)
     }
   }
 }
