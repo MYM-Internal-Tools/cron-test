@@ -10,7 +10,7 @@ export async function app_mention(req, res) {
       await postToChannel(
         event.channel,
         res,
-        `Hi <@${event.user}>! :tada: \n  Quote of the day: "${quote}" by ${author} `
+        `Hi <@${event.user}>! :tada: \n*Quote of the day&:\n>*${quote}* by _${author}_ `
       )
     } catch (error) {
       console.log(erro)
